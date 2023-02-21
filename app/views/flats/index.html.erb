@@ -1,9 +1,15 @@
 <div class="container">
-  <h1>All our Flats (<%= @flats.size %>)</h1>
+  <h1>All our Flats</h1>
+  <% if @searched %>
+    <p>You searched fo <strong><%= params[:query]  %></strong>. We found <%= @flats.size %> flats out of our <%= Flat.all.size %> on our website.</p>
+  <% else %>
+    <p>All <%= @flats.size %> flats</p>
+  <% end %>
   <div class="cards-grid">
     <% @flats.each do |flat| %>
-      <div class="card" style="width: 18rem;">
+      <div class="card" style="width: 24rem;">
         <div class="card-body">
+          <img src=<%= flat.picture_url %> class="card-img-top" alt="">
           <h4 class="card-title fw-bold"><%= flat.name %></h4>
           <p class="card-text"><%= flat.address %></p>
           <div>
@@ -13,7 +19,12 @@
             <%= flat.price_per_night %>
           </div>
           <hr>
-          <%= link_to 'More info', flat_path(flat) %>
+          <div class='d-flex justify-content-around'>
+            <%= link_to 'More info', flat_path(flat), class: 'text-primary' %>
+            <%= link_to 'Edit', edit_flat_path(flat), class: 'text-warning' %>
+            <%= link_to 'Remove', flat_path(flat), data: {turbo_method: :delete, turbo_confirm: "Are you sure?"}, class: 'text-danger' %>
+          </div>
+
         </div>
       </div>
     <% end %>
